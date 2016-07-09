@@ -64,7 +64,7 @@ public class SeekBarPreferenceView extends FrameLayout implements View.OnClickLi
         return controllerDelegate.isEnabled();
     }
 
-    public int getMaxValue() {
+    public float getMaxValue() {
         return controllerDelegate.getMaxValue();
     }
 
@@ -88,7 +88,7 @@ public class SeekBarPreferenceView extends FrameLayout implements View.OnClickLi
         controllerDelegate.setSummary(summary);
     }
 
-    public int getMinValue() {
+    public float getMinValue() {
      return controllerDelegate.getMinValue();
     }
 
@@ -96,7 +96,7 @@ public class SeekBarPreferenceView extends FrameLayout implements View.OnClickLi
         controllerDelegate.setMinValue(minValue);
     }
 
-    public int getInterval() {
+    public float getInterval() {
         return controllerDelegate.getInterval();
     }
 
@@ -104,7 +104,7 @@ public class SeekBarPreferenceView extends FrameLayout implements View.OnClickLi
         controllerDelegate.setInterval(interval);
     }
 
-    public int getCurrentValue() {
+    public float getCurrentValue() {
         return controllerDelegate.getCurrentValue();
     }
 

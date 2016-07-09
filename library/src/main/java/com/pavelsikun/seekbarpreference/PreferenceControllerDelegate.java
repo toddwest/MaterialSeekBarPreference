@@ -27,10 +27,10 @@ class PreferenceControllerDelegate implements SeekBar.OnSeekBarChangeListener, V
 
     private static final int DEFAULT_DIALOG_STYLE = R.style.MSB_Dialog_Default;
 
-    private int maxValue;
-    private int minValue;
-    private int interval;
-    private int currentValue;
+    private float maxValue;
+    private float minValue;
+    private float interval;
+    private float currentValue;
     private String measurementUnit;
     private boolean dialogEnabled;
 
@@ -151,7 +151,7 @@ class PreferenceControllerDelegate implements SeekBar.OnSeekBarChangeListener, V
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        int newValue = progress + minValue;
+        float newValue = progress + minValue;
 
         if (interval != 1 && newValue % interval != 0) {
             newValue = Math.round(((float) newValue) / interval) * interval;
@@ -190,7 +190,18 @@ class PreferenceControllerDelegate implements SeekBar.OnSeekBarChangeListener, V
                     public boolean persistInt(int value) {
                         setCurrentValue(value);
                         seekBarView.setOnSeekBarChangeListener(null);
-                        seekBarView.setProgress(currentValue - minValue);
+                        seekBarView.setProgress((int) (currentValue - minValue));
+                        seekBarView.setOnSeekBarChangeListener(PreferenceControllerDelegate.this);
+
+                        valueView.setText(String.valueOf(currentValue));
+                        return true;
+                    }
+
+                    @Override
+                    public boolean persistFloat(float value) {
+                        setCurrentValue(value);
+                        seekBarView.setOnSeekBarChangeListener(null);
+                        seekBarView.setProgress((int) (currentValue - minValue));
                         seekBarView.setOnSeekBarChangeListener(PreferenceControllerDelegate.this);
 
                         valueView.setText(String.valueOf(currentValue));
@@ -256,49 +267,65 @@ class PreferenceControllerDelegate implements SeekBar.OnSeekBarChangeListener, V
 
     }
 
-    int getMaxValue() {
+    float getMaxValue() {
         return maxValue;
     }
 
-    void setMaxValue(int maxValue) {
+    void setMaxValue(float maxValue) {
         this.maxValue = maxValue;
 
         if (seekBarView != null) {
             if (minValue <= 0 && maxValue >= 0) {
-                seekBarView.setMax(maxValue - minValue);
+                seekBarView.setMax((int) (maxValue - minValue));
             }
             else {
-                seekBarView.setMax(maxValue);
+                seekBarView.setMax((int) maxValue);
             }
 
-            seekBarView.setProgress(currentValue - minValue);
+            seekBarView.setProgress((int) (currentValue - minValue));
         }
     }
 
-    int getMinValue() {
+    float getMinValue() {
         return minValue;
     }
 
-    public void setMinValue(int minValue) {
+    public void setMinValue(float minValue) {
         this.minValue = minValue;
         setMaxValue(maxValue);
     }
 
-    int getInterval() {
+    float getInterval() {
         return interval;
     }
 
-    void setInterval(int interval) {
+    void setInterval(float interval) {
         this.interval = interval;
     }
 
-    int getCurrentValue() {
+    float getCurrentValue() {
         return currentValue;
     }
 
-    void setCurrentValue(int value) {
+    void setCurrentValue(float value) {
         if(value < minValue) value = minValue;
         if(value > maxValue) value = maxValue;
+
+        if (changeValueListener != null) {
+            if (!changeValueListener.onChange(value)) {
+                return;
+            }
+        }
+        currentValue = value;
+
+        if(persistValueListener != null) {
+            persistValueListener.persistFloat(value);
+        }
+    }
+
+    void setCurrentValue(int value) {
+        if(value < minValue) value = (int) minValue;
+        if(value > maxValue) value = (int) maxValue;
 
         if (changeValueListener != null) {
             if (!changeValueListener.onChange(value)) {

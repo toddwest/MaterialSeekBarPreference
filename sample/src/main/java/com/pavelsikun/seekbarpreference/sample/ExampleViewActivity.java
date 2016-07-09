@@ -97,6 +97,12 @@ public class ExampleViewActivity extends AppCompatActivity {
                 Toast.makeText(ExampleViewActivity.this, "callback from view: " + value, Toast.LENGTH_SHORT).show();
                 return true;
             }
+
+            @Override
+            public boolean persistFloat(float value) {
+                Toast.makeText(ExampleViewActivity.this, "callback from view: " + value, Toast.LENGTH_SHORT).show();
+                return true;
+            }
         });
 
         root.addView(view);

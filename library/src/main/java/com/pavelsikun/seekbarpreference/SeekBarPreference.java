@@ -56,7 +56,7 @@ public class SeekBarPreference extends Preference implements View.OnClickListene
     @Override
     protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValue) {
         super.onSetInitialValue(restorePersistedValue, defaultValue);
-        controllerDelegate.setCurrentValue(getPersistedInt(controllerDelegate.getCurrentValue()));
+        controllerDelegate.setCurrentValue(getPersistedFloat(controllerDelegate.getCurrentValue()));
     }
 
     @Override
@@ -65,7 +65,17 @@ public class SeekBarPreference extends Preference implements View.OnClickListene
     }
 
     @Override
+    public boolean persistFloat(float value) {
+        return super.persistFloat(value);
+    }
+
+    @Override
     public boolean onChange(int value) {
+        return callChangeListener(value);
+    }
+
+    @Override
+    public boolean onChange(float value) {
         return callChangeListener(value);
     }
 
@@ -74,37 +84,37 @@ public class SeekBarPreference extends Preference implements View.OnClickListene
         controllerDelegate.onClick(v);
     }
 
-    public int getMaxValue() {
+    public float getMaxValue() {
         return controllerDelegate.getMaxValue();
     }
 
-    public void setMaxValue(int maxValue) {
+    public void setMaxValue(float maxValue) {
         controllerDelegate.setMaxValue(maxValue);
     }
 
-    public int getMinValue() {
+    public float getMinValue() {
         return controllerDelegate.getMinValue();
     }
 
-    public void setMinValue(int minValue) {
+    public void setMinValue(float minValue) {
         controllerDelegate.setMinValue(minValue);
     }
 
-    public int getInterval() {
+    public float getInterval() {
         return controllerDelegate.getInterval();
     }
 
-    public void setInterval(int interval) {
+    public void setInterval(float interval) {
         controllerDelegate.setInterval(interval);
     }
 
-    public int getCurrentValue() {
+    public float getCurrentValue() {
         return controllerDelegate.getCurrentValue();
     }
 
     public void setCurrentValue(int currentValue) {
         controllerDelegate.setCurrentValue(currentValue);
-        persistInt(controllerDelegate.getCurrentValue());
+        persistFloat(controllerDelegate.getCurrentValue());
     }
 
     public String getMeasurementUnit() {

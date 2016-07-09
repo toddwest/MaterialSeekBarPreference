@@ -23,10 +23,10 @@ class CustomValueDialog {
     private Dialog dialog;
     private EditText customValueView;
 
-    private int minValue, maxValue, currentValue;
+    private float minValue, maxValue, currentValue;
     private PersistValueListener persistValueListener;
 
-    CustomValueDialog(Context context, int theme, int minValue, int maxValue, int currentValue) {
+    CustomValueDialog(Context context, int theme, float minValue, float maxValue, float currentValue) {
         this.minValue = minValue;
         this.maxValue = maxValue;
         this.currentValue = currentValue;
@@ -87,10 +87,10 @@ class CustomValueDialog {
     }
 
     private void tryApply() {
-        int value;
+        float value;
 
         try {
-            value = Integer.parseInt(customValueView.getText().toString());
+            value = Float.parseFloat(customValueView.getText().toString());
             if (value > maxValue) {
                 Log.e(TAG, "wrong input( > than required): " + customValueView.getText().toString());
                 notifyWrongInput();
@@ -109,7 +109,7 @@ class CustomValueDialog {
         }
 
         if(persistValueListener != null) {
-            persistValueListener.persistInt(value);
+            persistValueListener.persistFloat(value);
             dialog.dismiss();
         }
     }
